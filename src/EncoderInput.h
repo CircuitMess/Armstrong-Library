@@ -6,7 +6,7 @@
 
 #include <Loop/LoopListener.h>
 #include <cstdlib>
-#include "WithListeners.h"
+#include <WithListeners.h>
 #include "Pins.hpp"
 
 class EncoderInput;
