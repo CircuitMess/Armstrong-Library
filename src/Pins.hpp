@@ -1,3 +1,7 @@
+
+#ifndef ARMSTRONG_LIBRARY_PINS_HPP
+#define ARMSTRONG_LIBRARY_PINS_HPP
+
 #define ENC_1A 34
 #define ENC_1B 39
 #define ENC_2A 16
@@ -27,3 +31,5 @@
 #define LED_3 3
 #define LED_4 4
 #define LED_PP 0
+
+#endif ARMSTRONG_LIBRARY_PINS_HPP
