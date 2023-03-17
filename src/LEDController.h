@@ -5,6 +5,8 @@
 
 #include <cstdint>
 #include <Devices/ShiftOutput.h>
+#include "Pins.hpp"
+#include <memory>
 
 class LEDController {
 public:
@@ -14,7 +16,7 @@ public:
 	void turnOffLed(uint8_t i);
 
 private:
-	ShiftOutput* output;
+	std::unique_ptr<ShiftOutput> output;
 };
 
 
