@@ -27,3 +27,6 @@
 #define LED_3 3
 #define LED_4 4
 #define LED_PP 0
+
+#define SDA_PIN 33
+#define SCL_PIN 32
