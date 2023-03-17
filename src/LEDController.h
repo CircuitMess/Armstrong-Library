@@ -17,6 +17,8 @@ public:
 
 private:
 	std::unique_ptr<ShiftOutput> output;
+	uint8_t leds[5] = {LED_PP, LED_1, LED_2, LED_3, LED_4};
+	bool ledsValue[5] = {false};
 };
 
 
