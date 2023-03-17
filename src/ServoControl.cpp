@@ -5,6 +5,10 @@ ServoControl::ServoControl(){
 
 }
 
+ServoControl::~ServoControl(){
+	end();
+}
+
 void ServoControl::setPos(uint8_t i, uint8_t pos){
 	if(i >= 4) return;
 	pwmValues[i] = constrain(pos, Ranges[i].min, Ranges[i].max);

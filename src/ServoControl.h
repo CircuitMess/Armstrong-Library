@@ -10,6 +10,7 @@
 class ServoControl {
 public:
 	ServoControl();
+	~ServoControl();
 	void setPos(uint8_t i, uint8_t pos);
 	uint8_t getPos(uint8_t i);
 	void begin();
