@@ -12,8 +12,8 @@ class LEDController {
 public:
 	LEDController();
 	~LEDController();
-	void turnOnLed(uint8_t i);
-	void turnOffLed(uint8_t i);
+	void set(uint8_t index, bool value);
+	bool get(uint8_t index, bool value);
 
 private:
 	std::unique_ptr<ShiftOutput> output;

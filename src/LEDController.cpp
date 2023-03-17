@@ -15,6 +15,11 @@ void LEDController::turnOnLed(uint8_t i){
 	output->set(i, true);
 }
 
-void LEDController::turnOffLed(uint8_t i){
-	output->set(i, false);
+void LEDController::set(uint8_t index, bool value){
+	output->set(leds[index], value);
+	ledsValue[index] = value;
+}
+
+bool LEDController::get(uint8_t index, bool value){
+	return (ledsValue[index] == value);
 }
