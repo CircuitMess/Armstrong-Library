@@ -3,12 +3,16 @@
 #define ARMSTRONG_LIBRARY_ARMSTRONG_H
 
 
+#include <Input/InputShift.h>
 class ArmstrongImpl {
 public:
 	ArmstrongImpl();
 	void begin();
 
-	void shutdown();
+	InputShift* getInput();
+
+private:
+	InputShift* input;
 
 };
 
