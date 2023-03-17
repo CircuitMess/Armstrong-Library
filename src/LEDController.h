@@ -12,6 +12,10 @@ class LEDController {
 public:
 	LEDController();
 	~LEDController();
+
+	void begin();
+	void end();
+
 	void set(uint8_t index, bool value);
 	bool get(uint8_t index, bool value);
 

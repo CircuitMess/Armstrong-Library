@@ -1,18 +1,22 @@
 
 #include "LEDController.h"
-#include "Pins.hpp"
+
 
 LEDController::LEDController(){
-	output = new ShiftOutput(OUT_CLOCK_PIN, OUT_DATA_PIN);
-	output->begin();
+
 }
 
 LEDController::~LEDController(){
-	delete output;
+	end();
 }
 
-void LEDController::turnOnLed(uint8_t i){
-	output->set(i, true);
+void LEDController::begin(){
+	output = std::make_unique<ShiftOutput>(OUT_CLOCK, OUT_DATA);
+	output->begin();
+}
+
+void LEDController::end(){
+	output->setAll(false);
 }
 
 void LEDController::set(uint8_t index, bool value){
