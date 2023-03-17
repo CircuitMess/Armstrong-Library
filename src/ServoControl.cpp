@@ -11,7 +11,7 @@ ServoControl::~ServoControl(){
 
 void ServoControl::setPos(uint8_t index, uint8_t pos){
 	if(index >= 4) return;
-	pwmValues[index] = constrain(pos, Ranges[index].min, Ranges[index].max);
+	pwmValues[index] = map(pos, 0, 255, Ranges[index].min, Ranges[index].max);
 	ledcWrite(PWMChannels[index], pwmValues[index]);
 }
 
