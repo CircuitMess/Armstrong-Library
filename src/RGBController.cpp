@@ -21,6 +21,7 @@ void RGBController::begin(){
 
 void RGBController::end(){
 	for(int i = 0; i < 3; i++){
+		ledcWrite(PWMChannels[i], 0);
 		ledcDetachPin(pins[i]);
 	}
 }
