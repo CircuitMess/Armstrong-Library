@@ -24,6 +24,6 @@ void LEDController::set(uint8_t index, bool value){
 	ledsValue[index] = value;
 }
 
-bool LEDController::get(uint8_t index, bool value){
-	return (ledsValue[index] == value);
+bool LEDController::get(uint8_t index){
+	return ledsValue[index];
 }

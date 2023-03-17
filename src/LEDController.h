@@ -17,7 +17,7 @@ public:
 	void end();
 
 	void set(uint8_t index, bool value);
-	bool get(uint8_t index, bool value);
+	bool get(uint8_t index);
 
 private:
 	std::unique_ptr<ShiftOutput> output;
