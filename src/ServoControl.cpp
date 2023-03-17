@@ -29,5 +29,6 @@ void ServoControl::begin(){
 void ServoControl::end(){
 	for(int i = 0; i < 4; i++){
 		ledcDetachPin(pwmPins[i]);
+		pinMode(pwmPins[i], INPUT);
 	}
 }
