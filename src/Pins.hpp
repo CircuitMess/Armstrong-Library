@@ -28,5 +28,5 @@
 #define LED_4 4
 #define LED_PP 0
 
-#define OUT_CLOCK_PIN 15
-#define OUT_DATA_PIN 25
+#define OUT_CLOCK 15
+#define OUT_DATA 25
