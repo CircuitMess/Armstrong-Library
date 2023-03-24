@@ -1,31 +1,21 @@
-
-
 #ifndef ARMSTRONG_LIBRARY_ENCODERINPUT_H
 #define ARMSTRONG_LIBRARY_ENCODERINPUT_H
 
-
 #include <Loop/LoopListener.h>
-#include <cstdlib>
-#include <WithListeners.h>
+#include <Util/WithListeners.h>
 #include "Pins.hpp"
 
 class EncoderInput;
 
-class EncoderListener{
+class EncoderListener {
 	friend EncoderInput;
-
 private:
-	virtual void EncMoveA(int8_t amount);
-	virtual void EncMoveB(int8_t amount);
-	virtual void EncMoveC(int8_t amount);
-	virtual void EncMoveD(int8_t amount);
+	virtual void encoderMove(uint8_t enc, int8_t amount) = 0;
 };
-
 
 class EncoderInput : public LoopListener, public WithListeners<EncoderListener> {
 public:
-	EncoderInput();
-	~EncoderInput();
+	~EncoderInput() override;
 	void begin();
 	void end();
 
@@ -35,7 +25,7 @@ private:
 
 	int32_t prevState[4];
 
-	const std::pair<int, int> pins[4] = {
+	static constexpr std::pair<int, int> pins[4] = {
 			{ ENC_1A, ENC_1B },
 			{ ENC_2A, ENC_2B },
 			{ ENC_3A, ENC_3B },

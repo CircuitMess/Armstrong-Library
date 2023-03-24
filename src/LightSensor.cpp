@@ -1,12 +1,7 @@
-
 #include <Wire.h>
 #include <Loop/LoopManager.h>
 #include "LightSensor.h"
 #include "Pins.hpp"
-
-LightSensor::LightSensor(){
-
-}
 
 void LightSensor::begin(){
 	if(!Wire.begin(SDA_PIN, SCL_PIN) || !Sensor.begin()) return;
@@ -18,10 +13,9 @@ void LightSensor::end(){
 	LoopManager::removeListener(this);
 }
 
-Pixel LightSensor::getPixel(){
+Pixel LightSensor::getPixel() const{
 	return pixel;
 }
-
 
 void LightSensor::loop(uint micros){
 	counter += micros;
@@ -32,18 +26,14 @@ void LightSensor::loop(uint micros){
 		float g = (float) Sensor.getGreen() / (float) UINT16_MAX;
 		float b = (float) Sensor.getBlue() / (float) UINT16_MAX;
 
-		b = std::min(1.0f, b*2.0f);
+		b = std::min(1.0f, b * 2.0f);
 
 		r = constrain(pow(r, 6.0f) * 50.0f, 0.0f, 1.0f);
 		g = constrain(pow(g, 6.0f) * 50.0f, 0.0f, 1.0f);
 		b = constrain(pow(b, 6.0f) * 50.0f, 0.0f, 1.0f);
 
-		uint8_t uintR = 255.0f - pow(r, 2.0f)*255.0f;
-		uint8_t uintG = 255.0f - pow(g, 2.0f)*255.0f;
-		uint8_t uintB = 255.0f - pow(b, 2.0f)*255.0f;
-
-		pixel.r = uintR;
-		pixel.g = uintG;
-		pixel.b = uintB;
+		pixel.r = r * 255.0;
+		pixel.g = g * 255.0;
+		pixel.b = b * 255.0;
 	}
 }

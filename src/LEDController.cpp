@@ -1,8 +1,8 @@
-
 #include "LEDController.h"
 
+constexpr uint8_t LEDController::Pins[NumLEDs];
 
-LEDController::LEDController(){
+LEDController::LEDController() : output(SHIFTOUT_CLOCK, SHIFTOUT_DATA){
 
 }
 
@@ -11,19 +11,27 @@ LEDController::~LEDController(){
 }
 
 void LEDController::begin(){
-	output = std::make_unique<ShiftOutput>(OUT_CLOCK, OUT_DATA);
-	output->begin();
+	output.begin();
+	for(int i = 0; i < NumLEDs; i++){
+		output.set(Pins[i], ledsValue[i]);
+	}
 }
 
 void LEDController::end(){
-	output->setAll(false);
+	output.setAll(false);
 }
 
 void LEDController::set(uint8_t index, bool value){
-	output->set(leds[index], value);
+	if(index >= NumLEDs) return;
+	output.set(Pins[map(index)], value);
 	ledsValue[index] = value;
 }
 
-bool LEDController::get(uint8_t index){
-	return ledsValue[index];
+bool LEDController::get(uint8_t index) const{
+	if(index >= NumLEDs) return false;
+	return ledsValue[map(index)];
+}
+
+uint8_t LEDController::map(uint8_t led) const{
+	return (led + 1) % NumLEDs;
 }

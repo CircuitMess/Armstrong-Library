@@ -1,7 +1,5 @@
-
 #ifndef ARMSTRONG_LIBRARY_LEDCONTROLLER_H
 #define ARMSTRONG_LIBRARY_LEDCONTROLLER_H
-
 
 #include <cstdint>
 #include <Devices/ShiftOutput.h>
@@ -17,12 +15,14 @@ public:
 	void end();
 
 	void set(uint8_t index, bool value);
-	bool get(uint8_t index);
+	[[nodiscard]] bool get(uint8_t index) const;
 
 private:
-	std::unique_ptr<ShiftOutput> output;
-	uint8_t leds[5] = {LED_PP, LED_1, LED_2, LED_3, LED_4};
-	bool ledsValue[5] = {false};
+	ShiftOutput output;
+	static constexpr uint8_t NumLEDs = 5;
+	bool ledsValue[NumLEDs] = { false };
+	uint8_t map(uint8_t led) const;
+	static constexpr uint8_t Pins[NumLEDs] = { LED_PP, LED_1, LED_2, LED_3, LED_4 };
 };
 
 
