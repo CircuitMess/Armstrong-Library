@@ -31,6 +31,8 @@
 #define LED_4 4
 #define LED_PP 0
 
+#define SDA_PIN 33
+#define SCL_PIN 32
 #define OUT_CLOCK 15
 #define OUT_DATA 25
 
