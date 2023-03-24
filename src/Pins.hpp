@@ -1,4 +1,3 @@
-
 #ifndef ARMSTRONG_LIBRARY_PINS_HPP
 #define ARMSTRONG_LIBRARY_PINS_HPP
 
@@ -31,5 +30,8 @@
 #define LED_3 3
 #define LED_4 4
 #define LED_PP 0
+
+#define OUT_CLOCK 15
+#define OUT_DATA 25
 
 #endif ARMSTRONG_LIBRARY_PINS_HPP
