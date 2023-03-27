@@ -1,4 +1,3 @@
-
 #ifndef ARMSTRONG_LIBRARY_PINS_HPP
 #define ARMSTRONG_LIBRARY_PINS_HPP
 
@@ -32,4 +31,21 @@
 #define LED_4 4
 #define LED_PP 0
 
-#endif ARMSTRONG_LIBRARY_PINS_HPP
+#define SDA_PIN 33
+#define SCL_PIN 32
+
+#define SHIFTOUT_CLOCK 15
+#define SHIFTOUT_DATA 25
+
+#define SHIFTIN_DATA 14
+#define SHIFTIN_CLOCK 27
+#define SHIFTIN_LOAD 26
+#define SHIFTIN_NUMBUTTONS 8
+
+/*
+ * PWM channels:
+ *	0-3 servo control
+ *	4-6 RGB LED
+*/
+
+#endif //ARMSTRONG_LIBRARY_PINS_HPP
