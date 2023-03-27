@@ -17,6 +17,8 @@ public:
 	void set(uint8_t index, bool value);
 	[[nodiscard]] bool get(uint8_t index) const;
 
+	void clearAll();
+
 private:
 	ShiftOutput output;
 	static constexpr uint8_t NumLEDs = 5;

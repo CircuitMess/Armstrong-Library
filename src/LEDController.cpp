@@ -32,6 +32,12 @@ bool LEDController::get(uint8_t index) const{
 	return ledsValue[map(index)];
 }
 
+void LEDController::clearAll(){
+	for(int i = 0; i < NumLEDs; i++){
+		set(i, false);
+	}
+}
+
 uint8_t LEDController::map(uint8_t led) const{
 	return (led + 1) % NumLEDs;
 }
