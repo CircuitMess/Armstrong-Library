@@ -30,7 +30,6 @@ void ServoControl::setPos(uint8_t index, uint8_t pos){
 
 uint8_t ServoControl::getPos(uint8_t index) const{
 	if(index >= 4) return 0;
-	Serial.printf("pwm Value: %d\n", pwmValues[index]);
 	return pwmValues[index];
 }
 

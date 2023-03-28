@@ -23,21 +23,17 @@ void LEDController::end(){
 
 void LEDController::set(uint8_t index, bool value){
 	if(index >= NumLEDs) return;
-	output.set(Pins[map(index)], value);
+	output.set(Pins[index], value);
 	ledsValue[index] = value;
 }
 
 bool LEDController::get(uint8_t index) const{
 	if(index >= NumLEDs) return false;
-	return ledsValue[map(index)];
+	return ledsValue[index];
 }
 
 void LEDController::clearAll(){
 	for(int i = 0; i < NumLEDs; i++){
 		set(i, false);
 	}
-}
-
-uint8_t LEDController::map(uint8_t led) const{
-	return (led + 1) % NumLEDs;
 }

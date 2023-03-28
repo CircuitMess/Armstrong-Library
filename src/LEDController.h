@@ -23,8 +23,7 @@ private:
 	ShiftOutput output;
 	static constexpr uint8_t NumLEDs = 5;
 	bool ledsValue[NumLEDs] = { false };
-	uint8_t map(uint8_t led) const;
-	static constexpr uint8_t Pins[NumLEDs] = { LED_PP, LED_1, LED_2, LED_3, LED_4 };
+	static constexpr uint8_t Pins[NumLEDs] = { LED_2, LED_3, LED_4, LED_PP, LED_1 };
 };
 
 
