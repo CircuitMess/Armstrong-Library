@@ -7,7 +7,7 @@
 
 class LEDRGBController {
 public:
-	LEDRGBController();
+	void begin();
 	void set(uint8_t r, uint8_t g, uint8_t b);
 	void set(Pixel pixel);
 

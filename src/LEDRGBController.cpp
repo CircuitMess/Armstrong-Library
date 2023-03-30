@@ -4,10 +4,10 @@
 constexpr uint8_t LEDRGBController::pins[3];
 constexpr uint8_t LEDRGBController::PWMChannels[3];
 
-LEDRGBController::LEDRGBController(){
+void LEDRGBController::begin(){
 	for(int i = 0; i < 3; i++){
 		ledcSetup(PWMChannels[i], 1000, 8);
-		ledcWrite(PWMChannels[i], 0);
+		ledcWrite(PWMChannels[i], 255);
 		ledcAttachPin(pins[i], PWMChannels[i]);
 	}
 }

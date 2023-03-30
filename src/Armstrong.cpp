@@ -17,9 +17,9 @@ void ArmstrongImpl::begin(){
 	disableCore0WDT();
 	disableCore1WDT();
 
-	LED.begin();
 	Encoder.begin();
-	RGB.set(0,0,0);
+	LED.begin();
+	RGB.begin();
 	Sensor.begin();
 	Servo.begin();
 
