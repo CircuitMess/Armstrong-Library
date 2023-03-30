@@ -1,6 +1,7 @@
 #ifndef ARMSTRONG_LIBRARY_ARMSTRONG_H
 #define ARMSTRONG_LIBRARY_ARMSTRONG_H
 
+#include <CircuitOS.h>
 #include <Input/InputShift.h>
 #include "EncoderInput.h"
 #include "LEDController.h"
