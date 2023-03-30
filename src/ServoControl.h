@@ -32,7 +32,7 @@ private:
 	static constexpr uint8_t PWMChannels[NumMotors] = { 0, 1, 2, 3 };
 	static constexpr ServoRange Ranges[NumMotors] = {{ 25, 100 },
 													 { 45, 110 },
-													 { 35, 56 },
+													 { 37, 56 },
 													 { 25, 60 }};
 
 };
