@@ -4,7 +4,7 @@
 #include "Pins.hpp"
 
 void LightSensor::begin(){
-	if(!Wire.begin(SDA_PIN, SCL_PIN) || !Sensor.begin()) return;
+	if(!Wire.begin(I2C_SDA, I2C_SCL) || !Sensor.begin()) return;
 	Sensor.setConfiguration(VEML6040_IT_320MS | VEML6040_AF_AUTO | VEML6040_SD_ENABLE);
 	LoopManager::addListener(this);
 }

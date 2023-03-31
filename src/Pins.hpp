@@ -31,8 +31,8 @@
 #define LED_4 3
 #define LED_PP 4
 
-#define SDA_PIN 33
-#define SCL_PIN 32
+#define I2C_SDA 33
+#define I2C_SCL 32
 
 #define SHIFTOUT_CLOCK 15
 #define SHIFTOUT_DATA 25
