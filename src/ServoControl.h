@@ -1,39 +1,59 @@
 #ifndef ARMSTRONG_LIBRARY_SERVOCONTROL_H
 #define ARMSTRONG_LIBRARY_SERVOCONTROL_H
 
-#include <cstdint>
+#include <Arduino.h>
 #include <Loop/LoopListener.h>
-#include <cstdlib>
 #include "Pins.hpp"
-
-struct ServoRange {
-	uint8_t min;
-	uint8_t max;
-};
+#include "Names.h"
+#include <unordered_map>
 
 class ServoControl {
 public:
 	ServoControl();
-	~ServoControl();
 
 	void begin();
 	void end();
 
-	void setPos(uint8_t index, uint8_t pos);
-	[[nodiscard]] uint8_t getPos(uint8_t index) const;
+	void setPos(Motor motor, uint8_t pos);
+	uint8_t getPos(Motor motor) const;
+	void centerPos();
 
 private:
-	static constexpr uint8_t NumMotors = 4;
-	uint8_t pwmValues[NumMotors] = { 127 };
+	const std::unordered_map<Motor, uint8_t, MotorHash> PWMChannels = {
+			{ Motor::Rotate, 0 },
+			{ Motor::Extend, 1 },
+			{ Motor::Pinch,  2 },
+			{ Motor::Lift,   3 }
+	};
 
-	uint8_t mapToRange(uint8_t enc, uint8_t value) const;
+	const std::unordered_map<Motor, uint8_t, MotorHash> Pins = {
+			{ Motor::Rotate, SERVO_1 },
+			{ Motor::Extend, SERVO_2 },
+			{ Motor::Pinch,  SERVO_3 },
+			{ Motor::Lift,   SERVO_4 }
+	};
 
-	static constexpr uint8_t PWMPins[NumMotors] = { SERVO_1, SERVO_2, SERVO_3, SERVO_4 };
-	static constexpr uint8_t PWMChannels[NumMotors] = { 0, 1, 2, 3 };
-	static constexpr ServoRange Ranges[NumMotors] = {{ 25, 100 },
-													 { 45, 110 },
-													 { 37, 56 },
-													 { 25, 60 }};
+	struct MotorLimit {
+		uint8_t min, max;
+	};
+
+	const std::unordered_map<Motor, MotorLimit, MotorHash> Limits = {
+			{ Motor::Rotate, { 30, 95 }},
+			{ Motor::Extend, { 60, 100 }},
+			{ Motor::Pinch, { 30, 45 }},
+			{ Motor::Lift, { 40, 75 }}
+	};
+
+	const std::unordered_map<Motor, uint8_t, MotorHash> StartPos = {
+			{ Motor::Rotate, 127 },
+			{ Motor::Extend, 100 },
+			{ Motor::Pinch,  255 },
+			{ Motor::Lift,   0 }
+	};
+
+	std::unordered_map<Motor, uint8_t, MotorHash> state;
+
+	uint8_t mapToRange(Motor motor, uint8_t value) const;
 
 };
 

@@ -1,46 +1,67 @@
 #include <Loop/LoopManager.h>
 #include "ServoControl.h"
 
-constexpr uint8_t ServoControl::PWMPins[NumMotors];
-constexpr uint8_t ServoControl::PWMChannels[NumMotors];
-constexpr ServoRange ServoControl::Ranges[NumMotors];
-
 ServoControl::ServoControl(){
-	for(auto& i:pwmValues){
-		i = 127;
+	for(const auto& pair : Pins){
+		state.insert({ pair.first, StartPos.find(pair.first)->second });
 	}
-}
-ServoControl::~ServoControl(){
-	end();
 }
 
 void ServoControl::begin(){
-	for(int i = 0; i < 4; i++){
-		ledcSetup(PWMChannels[i], 200, 8);
-		ledcAttachPin(PWMPins[i], PWMChannels[i]);
-		ledcWrite(PWMChannels[i], mapToRange(i, pwmValues[i]));
+	for(const auto& pair : Pins){
+		const auto motor = pair.first;
+		const auto pin = pair.second;
+		const auto chan = PWMChannels.find(motor)->second;
+
+		state[motor] = StartPos.find(motor)->second;
+
+		ledcSetup(chan, 200, 8);
+		ledcWrite(chan, mapToRange(motor, state[motor]));
+		ledcAttachPin(pin, chan);
 	}
 }
-
-void ServoControl::setPos(uint8_t index, uint8_t pos){
-	if(index >= 4) return;
-	pwmValues[index] = pos;
-	ledcWrite(PWMChannels[index], mapToRange(index, pos));
-}
-
-uint8_t ServoControl::getPos(uint8_t index) const{
-	if(index >= 4) return 0;
-	return pwmValues[index];
-}
-
 
 void ServoControl::end(){
-	for(unsigned char pwmPin: PWMPins){
-		ledcDetachPin(pwmPin);
-		pinMode(pwmPin, INPUT);
+	for(const auto& pair : Pins){
+		const auto motor = pair.first;
+		const auto pin = pair.second;
+		const auto chan = PWMChannels.find(motor)->second;
+
+		ledcDetachPin(chan);
+		pinMode(pin, INPUT);
 	}
 }
 
-uint8_t ServoControl::mapToRange(uint8_t enc, uint8_t value) const{
-	return map(value, 0, 255, Ranges[enc].min, Ranges[enc].max);
+void ServoControl::setPos(Motor motor, uint8_t pos){
+	auto pair = state.find(motor);
+	if(pair == state.end()) return;
+
+	state[motor] = pos;
+	auto val = mapToRange(motor, pos);
+
+	auto chan = PWMChannels.find(motor)->second;
+	ledcWrite(chan, val);
+}
+
+uint8_t ServoControl::getPos(Motor motor) const{
+	auto pair = state.find(motor);
+	if(pair == state.end()) return 0;
+	return pair->second;
+}
+
+void ServoControl::centerPos(){
+	for(const auto& pair : state){
+		const auto motor = pair.first;
+		const auto pos = StartPos.find(motor)->second;
+
+		setPos(motor, pos);
+	}
+}
+
+uint8_t ServoControl::mapToRange(Motor motor, uint8_t value) const{
+	const auto pair = Limits.find(motor);
+	if(pair == Limits.end()) return UINT8_MAX / 2;
+
+	const auto lim = pair->second;
+	return map(value, 0, 255, lim.min, lim.max);
 }
