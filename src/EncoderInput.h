@@ -3,34 +3,37 @@
 
 #include <Loop/LoopListener.h>
 #include <Util/WithListeners.h>
+#include <unordered_map>
 #include "Pins.hpp"
+#include "Names.h"
 
 class EncoderInput;
 
 class EncoderListener {
-	friend EncoderInput;
+friend EncoderInput;
 private:
-	virtual void encoderMove(uint8_t enc, int8_t amount) = 0;
+	virtual void encoderMove(Motor enc, int8_t amount) = 0;
 };
 
 class EncoderInput : public LoopListener, public WithListeners<EncoderListener> {
 public:
-	~EncoderInput() override;
+	EncoderInput();
 	void begin();
 	void end();
 
 private:
 	void loop(uint micros) override;
-	void scan(uint8_t i);
+	void scan(Motor enc);
 
-	int32_t prevState[4];
-
-	static constexpr std::pair<int, int> pins[4] = {
-			{ ENC_1A, ENC_1B },
-			{ ENC_2A, ENC_2B },
-			{ ENC_3A, ENC_3B },
-			{ ENC_4A, ENC_4B }
+	const std::unordered_map<Motor, std::pair<int, int>, MotorHash> PinMap = {
+			{ Motor::Rotate, { ENC_1A, ENC_1B } },
+			{ Motor::Extend, { ENC_2A, ENC_2B } },
+			{ Motor::Pinch, { ENC_3A, ENC_3B } },
+			{ Motor::Lift, { ENC_4A, ENC_4B } }
 	};
+
+	std::unordered_map<Motor, int32_t, MotorHash> prevState;
+
 };
 
 

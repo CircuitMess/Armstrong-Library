@@ -1,21 +1,23 @@
 #include "EncoderInput.h"
 #include <Loop/LoopManager.h>
 
-constexpr std::pair<int, int> EncoderInput::pins[4];
-
-EncoderInput::~EncoderInput(){
-	end();
+EncoderInput::EncoderInput(){
+	for(const auto& pair : PinMap){
+		prevState.insert({ pair.first, INT32_MAX });
+	}
 }
 
 void EncoderInput::begin(){
 	LoopManager::addListener(this);
 
-	for(auto pin: { ENC_1A, ENC_1B, ENC_2A, ENC_2B, ENC_3A, ENC_3B, ENC_4A, ENC_4B }){
-		pinMode(pin, INPUT);
-	}
+	for(const auto& pair : PinMap){
+		const auto motor = pair.first;
+		const auto pins = pair.second;
 
-	for(int& i: prevState){
-		i = INT32_MAX;
+		pinMode(pins.first, INPUT);
+		pinMode(pins.second, INPUT);
+
+		prevState[motor] = INT32_MAX;
 	}
 }
 
@@ -25,28 +27,29 @@ void EncoderInput::end(){
 
 void EncoderInput::loop(uint micros){
 	for(uint8_t i = 0; i < 4; i++){
-		scan(i);
+		scan((Motor) i);
 	}
 }
 
-void EncoderInput::scan(uint8_t i){
-	const auto pin = pins[i];
+void EncoderInput::scan(Motor enc){
+	const auto pins = PinMap.find(enc)->second;
 
 	int8_t movement = 0;
-	const int state = digitalRead(pin.first);
-	if(state != prevState[i] && prevState[i] != INT32_MAX){
-		if(digitalRead(pin.second) != state){
+
+	const int state = digitalRead(pins.first);
+	if(state != prevState[enc] && prevState[enc] != INT32_MAX){
+		if(digitalRead(pins.second) != state){
 			movement = 1;
 		}else{
 			movement = -1;
 		}
 	}
 
-	prevState[i] = state;
+	prevState[enc] = state;
 
 	if(movement != 0){
-		iterateListeners([&movement, &i](EncoderListener* encL){
-			encL->encoderMove(i, movement);
+		iterateListeners([movement, enc](EncoderListener* encL){
+			encL->encoderMove(enc, movement);
 		});
 	}
 }
