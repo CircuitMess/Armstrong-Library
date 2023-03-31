@@ -1,29 +1,36 @@
 #ifndef ARMSTRONG_LIBRARY_LEDCONTROLLER_H
 #define ARMSTRONG_LIBRARY_LEDCONTROLLER_H
 
-#include <cstdint>
+#include <Arduino.h>
 #include <Devices/ShiftOutput.h>
 #include "Pins.hpp"
-#include <memory>
+#include "Names.h"
+#include <unordered_map>
 
 class LEDController {
 public:
 	LEDController();
-	~LEDController();
 
 	void begin();
 	void end();
 
-	void set(uint8_t index, bool value);
-	[[nodiscard]] bool get(uint8_t index) const;
-
-	void clearAll();
+	void set(Slot slot, bool value);
+	bool get(Slot slot) const;
+	void clear();
 
 private:
+	const std::unordered_map<Slot, uint8_t, SlotHash> Pins = {
+			{ Slot::Pos1, LED_1 },
+			{ Slot::Pos2, LED_2 },
+			{ Slot::Pos3, LED_3 },
+			{ Slot::Pos4, LED_4 },
+			{ Slot::PlayPause, LED_PP }
+	};
+
 	ShiftOutput output;
-	static constexpr uint8_t NumLEDs = 5;
-	bool ledsValue[NumLEDs] = { false };
-	static constexpr uint8_t Pins[NumLEDs] = { LED_2, LED_3, LED_4, LED_PP, LED_1 };
+
+	std::unordered_map<Slot, bool, SlotHash> state;
+
 };
 
 

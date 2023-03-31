@@ -1,39 +1,41 @@
 #include "LEDController.h"
 
-constexpr uint8_t LEDController::Pins[NumLEDs];
-
 LEDController::LEDController() : output(SHIFTOUT_CLOCK, SHIFTOUT_DATA){
-
-}
-
-LEDController::~LEDController(){
-	end();
+	for(const auto& pair : Pins){
+		state.insert({ pair.first, false });
+	}
 }
 
 void LEDController::begin(){
 	output.begin();
-	for(int i = 0; i < NumLEDs; i++){
-		output.set(Pins[i], ledsValue[i]);
+
+	for(const auto& pair : Pins){
+		state[pair.first] = false;
+		output.set(pair.second, false);
 	}
 }
 
 void LEDController::end(){
-	output.setAll(false);
+	clear();
 }
 
-void LEDController::set(uint8_t index, bool value){
-	if(index >= NumLEDs) return;
-	output.set(Pins[index], value);
-	ledsValue[index] = value;
+void LEDController::set(Slot slot, bool value){
+	auto pair = Pins.find(slot);
+	if(pair == Pins.end()) return;
+
+	output.set(pair->second, value);
+	state[slot] = value;
 }
 
-bool LEDController::get(uint8_t index) const{
-	if(index >= NumLEDs) return false;
-	return ledsValue[index];
+bool LEDController::get(Slot slot) const{
+	auto pair = state.find(slot);
+	if(pair == state.end()) return false;
+
+	return pair->second;
 }
 
-void LEDController::clearAll(){
-	for(int i = 0; i < NumLEDs; i++){
-		set(i, false);
+void LEDController::clear(){
+	for(const auto& pair : Pins){
+		set(pair.first, false);
 	}
 }
