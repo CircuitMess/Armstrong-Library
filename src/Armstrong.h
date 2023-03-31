@@ -8,7 +8,7 @@
 #include "ServoControl.h"
 #include "LEDController.h"
 #include "RGBController.h"
-#include "LightSensor.h"
+#include "ColorSensor.h"
 
 class ArmstrongImpl {
 public:
@@ -37,6 +37,6 @@ extern EncoderInput Encoders;
 extern ServoControl Motors;
 extern LEDController LED;
 extern RGBController RGB;
-extern LightSensor Sensor;
+extern ColorSensor Sensor;
 
 #endif //ARMSTRONG_LIBRARY_ARMSTRONG_H

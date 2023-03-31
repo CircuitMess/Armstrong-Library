@@ -7,7 +7,7 @@ EncoderInput Encoders;
 ServoControl Motors;
 LEDController LED;
 RGBController RGB;
-LightSensor Sensor;
+ColorSensor Sensor;
 
 ArmstrongImpl::ArmstrongImpl(){
 
