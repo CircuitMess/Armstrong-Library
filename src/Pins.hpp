@@ -40,7 +40,6 @@
 #define SHIFTIN_DATA 14
 #define SHIFTIN_CLOCK 27
 #define SHIFTIN_LOAD 26
-#define SHIFTIN_NUMBUTTONS 8
 
 /*
  * PWM channels:
