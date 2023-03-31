@@ -3,6 +3,7 @@
 
 #include <CircuitOS.h>
 #include <Input/InputShift.h>
+#include "Names.h"
 #include "EncoderInput.h"
 #include "ServoControl.h"
 #include "LEDController.h"
@@ -16,8 +17,18 @@ public:
 
 	InputShift* getInput();
 
+	Slot btnToSlot(uint8_t i);
+
 private:
 	InputShift* input;
+
+	const std::unordered_map<uint8_t, Slot> BtnSLotMap = {
+			{ BTN_1, Slot::Pos1 },
+			{ BTN_2, Slot::Pos2 },
+			{ BTN_3, Slot::Pos3 },
+			{ BTN_4, Slot::Pos4 },
+			{ BTN_PP, Slot::PlayPause }
+	};
 
 };
 

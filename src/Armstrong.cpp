@@ -32,3 +32,10 @@ void ArmstrongImpl::begin(){
 InputShift* ArmstrongImpl::getInput(){
 	return input;
 }
+
+Slot ArmstrongImpl::btnToSlot(uint8_t i){
+	auto pair = BtnSLotMap.find(i);
+	if(pair == BtnSLotMap.end()) return None;
+
+	return pair->second;
+}
