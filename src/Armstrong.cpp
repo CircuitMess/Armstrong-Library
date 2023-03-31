@@ -1,6 +1,7 @@
 #include "Armstrong.h"
 #include <Loop/LoopManager.h>
 #include <SPIFFS.h>
+#include <Wire.h>
 
 ArmstrongImpl Armstrong;
 EncoderInput Encoders;
@@ -17,6 +18,8 @@ void ArmstrongImpl::begin(){
 	if(!SPIFFS.begin()){
 		printf("SPIFFS error\n");
 	}
+
+	Wire.begin(I2C_SDA, I2C_SCL);
 
 	Encoders.begin();
 	LED.begin();
