@@ -41,6 +41,8 @@
 #define SHIFTIN_CLOCK 27
 #define SHIFTIN_LOAD 26
 
+#define PIN_WHEELSON 35
+
 /*
  * PWM channels:
  *	0-3 servo control
