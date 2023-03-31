@@ -13,4 +13,10 @@ struct SlotHash {
 	}
 };
 
+struct MotorHash {
+	std::size_t operator()(Motor s) const{
+		return static_cast<std::size_t>(s);
+	}
+};
+
 #endif //ARMSTRONG_LIBRARY_DATA_H
