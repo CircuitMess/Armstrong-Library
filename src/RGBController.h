@@ -8,6 +8,7 @@
 class RGBController {
 public:
 	void begin();
+	void end();
 
 	void set(Pixel pixel);
 	void set(uint8_t r, uint8_t g, uint8_t b);

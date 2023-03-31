@@ -11,6 +11,14 @@ void RGBController::begin(){
 	}
 }
 
+void RGBController::end(){
+	for(int i = 0; i < 3; i++){
+		ledcDetachPin(Pins[i]);
+		pinMode(Pins[i], OUTPUT);
+		digitalWrite(Pins[i], HIGH);
+	}
+}
+
 void RGBController::set(uint8_t r, uint8_t g, uint8_t b){
 	set(0, r);
 	set(1, g);
