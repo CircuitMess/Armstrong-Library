@@ -1,27 +1,28 @@
 #include "Armstrong.h"
 #include <Loop/LoopManager.h>
-#include "Pins.hpp"
+#include <SPIFFS.h>
 
 ArmstrongImpl Armstrong;
+EncoderInput Encoders;
+ServoControl Motors;
 LEDController LED;
-EncoderInput Encoder;
-LEDRGBController RGB;
+RGBController RGB;
 LightSensor Sensor;
-ServoControl Servo;
 
 ArmstrongImpl::ArmstrongImpl(){
 
 }
 
 void ArmstrongImpl::begin(){
-	disableCore0WDT();
-	disableCore1WDT();
+	if(!SPIFFS.begin()){
+		printf("SPIFFS error\n");
+	}
 
-	Encoder.begin();
+	Encoders.begin();
 	LED.begin();
 	RGB.begin();
 	Sensor.begin();
-	Servo.begin();
+	Motors.begin();
 
 	input = new InputShift(14, 27, 26, 8);
 	input->begin();
