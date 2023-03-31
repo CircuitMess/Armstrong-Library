@@ -24,7 +24,7 @@ void ArmstrongImpl::begin(){
 	Sensor.begin();
 	Motors.begin();
 
-	input = new InputShift(14, 27, 26, 8);
+	input = new InputShift(SHIFTIN_DATA, SHIFTIN_CLOCK, SHIFTIN_LOAD, 8);
 	input->begin();
 	LoopManager::addListener(input);
 }
