@@ -25,11 +25,11 @@
 #define BTN_4 3
 #define BTN_PP 4
 
-#define LED_1 0
-#define LED_2 1
-#define LED_3 2
-#define LED_4 3
-#define LED_PP 4
+#define LED_1 1
+#define LED_2 2
+#define LED_3 3
+#define LED_4 4
+#define LED_PP 0
 
 #define I2C_SDA 33
 #define I2C_SCL 32
