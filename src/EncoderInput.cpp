@@ -1,15 +1,13 @@
 #include "EncoderInput.h"
 #include <Loop/LoopManager.h>
 
-EncoderInput::EncoderInput(){
+EncoderInput::EncoderInput() : scanTask("EncoderTask", [](Task* task){ static_cast<EncoderInput*>(task->arg)->scanTaskFunc(); }, 4096, this){
 	for(const auto& pair : PinMap){
 		prevState.insert({ pair.first, INT32_MAX });
 	}
 }
 
 void EncoderInput::begin(){
-	LoopManager::addListener(this);
-
 	for(const auto& pair : PinMap){
 		const auto motor = pair.first;
 		const auto pins = pair.second;
@@ -19,15 +17,34 @@ void EncoderInput::begin(){
 
 		prevState[motor] = INT32_MAX;
 	}
+
+	scanTask.start(1, 0);
+	LoopManager::addListener(this);
 }
 
 void EncoderInput::end(){
+	scanTask.stop(true);
 	LoopManager::removeListener(this);
 }
 
 void EncoderInput::loop(uint micros){
-	for(uint8_t i = 0; i < 4; i++){
-		scan((Motor) i);
+	sendTimer += micros;
+	if(sendTimer < SendInterval) return;
+	sendTimer = 0;
+
+	queueMut.lock();
+	std::deque<Action> queue(actionQueue);
+	actionQueue.clear();
+	queueMut.unlock();
+
+	while(!queue.empty()){
+		auto action = queue.front();
+		queue.pop_front();
+		if(action.amount == 0) continue;
+
+		iterateListeners([action](EncoderListener* listener){
+			listener->encoderMove(action.enc, action.amount);
+		});
 	}
 }
 
@@ -48,8 +65,33 @@ void EncoderInput::scan(Motor enc){
 	prevState[enc] = state;
 
 	if(movement != 0){
-		iterateListeners([movement, enc](EncoderListener* encL){
-			encL->encoderMove(enc, movement);
-		});
+		std::lock_guard<std::mutex> m(queueMut);
+
+		if(!actionQueue.empty() && actionQueue.back().enc == enc){
+			auto& last = actionQueue.back();
+
+			int total = last.amount + movement;
+			if(total == 0){
+				actionQueue.pop_back();
+			}else if(total < INT8_MAX && total > INT8_MIN){
+				last.amount = total;
+			}else{
+				actionQueue.push_back({ enc, movement });
+			}
+
+			return;
+		}
+
+		actionQueue.push_back({ enc, movement });
+	}
+}
+
+void EncoderInput::scanTaskFunc(){
+	while(scanTask.running){
+		for(int i = 0; i < 4; i++){
+			scan((Motor) i);
+		}
+
+		delay(1);
 	}
 }

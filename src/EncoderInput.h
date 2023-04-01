@@ -4,8 +4,11 @@
 #include <Loop/LoopListener.h>
 #include <Util/WithListeners.h>
 #include <unordered_map>
+#include <deque>
+#include <mutex>
 #include "Pins.hpp"
 #include "Names.h"
+#include <Util/Task.h>
 
 class EncoderInput;
 
@@ -33,6 +36,19 @@ private:
 	};
 
 	std::unordered_map<Motor, int32_t, MotorHash> prevState;
+
+	struct Action {
+		Motor enc;
+		int8_t amount;
+	};
+
+	std::deque<Action> actionQueue;
+	std::mutex queueMut;
+	Task scanTask;
+	void scanTaskFunc();
+
+	uint32_t sendTimer = 0;
+	static constexpr uint32_t SendInterval = 10000; // [us]
 
 };
 
