@@ -7,7 +7,7 @@
 #include "Names.h"
 #include <unordered_map>
 
-class ServoControl {
+class ServoControl : private LoopListener {
 public:
 	ServoControl();
 
@@ -17,6 +17,13 @@ public:
 	void setPos(Motor motor, uint8_t pos);
 	uint8_t getPos(Motor motor) const;
 	void centerPos();
+
+	// Easing. Enabled by default
+	void enableEasing(bool);
+	bool easingEnabled() const;
+
+	// Easing interval. Milliseconds between motors steps. Default 1ms (255ms for whole 0-255 rotation).
+	void setEasingInterval(uint8_t interval);
 
 private:
 	const std::unordered_map<Motor, uint8_t, MotorHash> PWMChannels = {
@@ -54,6 +61,15 @@ private:
 	std::unordered_map<Motor, uint8_t, MotorHash> state;
 
 	uint8_t mapToRange(Motor motor, uint8_t value) const;
+
+
+	bool easing = true;
+	void sendPos(Motor motor, uint8_t pos);
+	std::unordered_map<Motor, uint8_t, MotorHash> truePos;
+
+	uint32_t easeTime = 0;
+	uint32_t EaseInterval = 2000; // [us] - interval between steps
+	void loop(uint micros) override;
 
 };
 
