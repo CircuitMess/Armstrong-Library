@@ -15,7 +15,7 @@ ArmstrongImpl::ArmstrongImpl(){
 }
 
 void ArmstrongImpl::begin(){
-	if(!SPIFFS.begin()){
+	if(!SPIFFS.begin(true)){
 		printf("SPIFFS error\n");
 	}
 
