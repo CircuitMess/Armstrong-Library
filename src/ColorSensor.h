@@ -10,6 +10,8 @@ public:
 	void begin();
 	void end();
 
+	void scan();
+
 	Pixel getColor() const;
 	uint8_t getR() const;
 	uint8_t getG() const;
@@ -24,7 +26,6 @@ private:
 	uint32_t readTimer = 0;
 	static constexpr uint32_t ReadInterval = 350000; // [us]
 
-	void scan();
 };
 
 
