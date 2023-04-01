@@ -68,7 +68,7 @@ private:
 	std::unordered_map<Motor, uint8_t, MotorHash> truePos;
 
 	uint32_t easeTime = 0;
-	uint32_t EaseInterval = 2000; // [us] - interval between steps
+	uint32_t EaseInterval = 1500; // [us] - interval between steps
 	void loop(uint micros) override;
 
 };
